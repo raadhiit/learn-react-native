@@ -1,84 +1,120 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet, Alert } from 'react-native';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  Image
+} from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Link } from 'expo-router';
-import { Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
+import { Ionicons } from '@expo/vector-icons';
+import { MotiView, MotiText, View } from 'moti';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function HomeScreen() {
   const { logout } = useAuth();
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-
-      <ThemedView style={styles.profileIconContainer}>
-        <Pressable
-          onPress={() => {
-            Alert.alert('Logout', 'Are you sure?', [
-              { text: 'Cancel', style: 'cancel' },
-              {
-                text: 'Logout',
-                style: 'destructive',
-                onPress: () => {
-                  logout(); 
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.profileIconContainer}>
+          <Pressable
+            onPress={() => {
+              Alert.alert('Logout', 'Are you sure?', [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Logout',
+                  style: 'destructive',
+                  onPress: () => {
+                    logout();
+                  },
                 },
-              },
-            ]);
-          }}
-        >
-          <Ionicons name="log-out-outline" size={28} color="white" />
-        </Pressable>
-      </ThemedView>
+              ]);
+            }}
+          >
+            <Ionicons name="log-out-outline" size={28} color="black" />
+          </Pressable>
+        </View>
 
-      <ThemedView style={styles.textTitle}>
-        <ThemedText type="title">You Success for Login!</ThemedText>
-      </ThemedView>
-
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title" style={{ fontSize: 14 }}>Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-    </ParallaxScrollView>
+        <View style={styles.container}>
+          <View style={styles.hero}>
+            <MotiView
+              from={{ opacity: 0, translateY: -20 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ delay: 100, type: 'timing', duration: 800 }}
+              style={{ alignItems: 'center' }}
+            >
+              <Image
+                source={require('@/assets/images/harmul.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
+              <MotiText
+                from={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 300, duration: 800 }}
+                style={styles.title}
+              >
+                PT Contoh Teknologi
+              </MotiText>
+              <MotiText style={styles.subtitle}>
+                Solusi Inovatif untuk Bisnis Anda
+              </MotiText>
+            </MotiView>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  scrollView: {
+    flexGrow: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  container: {
+    paddingHorizontal: 20,
+    paddingVertical: 40,
+    width: '100%',
+    maxWidth: 768,
+    alignSelf: 'center',
+    minHeight: '100%', // Tambah ini agar konten bisa memenuhi layar
+  },
+  hero: {
+    marginTop: 50, // Tambah jarak dari atas
+    marginBottom: 32,
+    paddingHorizontal: 16,
     alignItems: 'center',
-    gap: 8,
   },
-  textTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingBottom: 20,
+  
+  logo: {
+    width: 900,
+    height: 250,
+    marginBottom: 5,
+    resizeMode: 'contain',
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000', // <-- putih
+    textAlign: 'center',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  subtitle: {
+    fontSize: 16,
+    color: '#666', // <-- abu terang
+    textAlign: 'center',
+    marginTop: 4,
   },
+  
   profileIconContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
